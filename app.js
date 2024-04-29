@@ -1,55 +1,49 @@
-const EventEmitter = require('events');
+// const start = performance.now();
+// setTimeout(() => {
+//   console.log(performance.now() - start);
+//   console.log('setTimeout');
+// }, 1000);
 
-const myEmitter = new EventEmitter();
+// function myFunc(arg) {
+//   console.log(`Argument: ${arg}`);
+// }
 
-const liogDbConnect = () => {
-  console.log('DB connected');
-};
+// setTimeout(myFunc, 1000, 'Hello, world!');
 
-myEmitter.addListener('dbConnected', liogDbConnect);
-myEmitter.emit('dbConnected');
+// const timerId = setTimeout(() => {
+//   console.log('boom');
+// }, 5000);
 
-myEmitter.removeListener('dbConnected', liogDbConnect);
-myEmitter.emit('dbConnected');
+// setTimeout(() => {
+//   clearTimeout(timerId);
+//   console.log('cleared');
+// }, 1000);
 
-myEmitter.on('msg', (data) => {
-  console.log(`Message: ${data}`);
+// const intervalId = setInterval(() => {
+//   console.log(performance.now());
+// }, 1000);
+
+// setTimeout(() => {
+//   clearInterval(intervalId);
+//   console.log('cleared');
+// }, 4000);
+
+// console.log('Before setTimeout');
+
+// setImmediate(() => {
+//   console.log('setImmediate');
+// });
+
+// console.log('Behind setTimeout');
+
+//Unref
+
+const timerId = setTimeout(() => {
+  console.log('boom');
+}, 5000);
+
+timerId.unref();
+
+setImmediate(() => {
+  timerId.ref();
 });
-
-myEmitter.prependListener('msg', (data) => {
-  console.log(`Prepended Message: ${data}`);
-});
-
-myEmitter.emit('msg', 'Hello World');
-
-myEmitter.once('msgOnce', () => {
-  console.log('Message Once');
-});
-
-myEmitter.emit('msgOnce');
-myEmitter.emit('msgOnce');
-
-console.log(myEmitter.getMaxListeners());
-myEmitter.setMaxListeners(1);
-console.log(myEmitter.getMaxListeners());
-console.log(myEmitter.listenerCount('msg'));
-console.log(myEmitter.listenerCount('msgOnce'));
-console.log(myEmitter.listeners('msg'));
-console.log(myEmitter.eventNames());
-
-//Error Event
-
-myEmitter.on('error', (err) => {
-  console.log(`Error: ${err.message}`);
-});
-
-myEmitter.emit('error', new Error('Something went wrong'));
-
-const target = new EventTarget();
-
-const logTarget = () => {
-  console.log('EventTarget');
-};
-
-target.addEventListener('log', logTarget);
-target.dispatchEvent(new Event('log'));
