@@ -1,49 +1,38 @@
-// const start = performance.now();
-// setTimeout(() => {
-//   console.log(performance.now() - start);
-//   console.log('setTimeout');
-// }, 1000);
+const fs = require('fs');
 
-// function myFunc(arg) {
-//   console.log(`Argument: ${arg}`);
-// }
+console.log('Init');
 
-// setTimeout(myFunc, 1000, 'Hello, world!');
-
-// const timerId = setTimeout(() => {
-//   console.log('boom');
-// }, 5000);
-
-// setTimeout(() => {
-//   clearTimeout(timerId);
-//   console.log('cleared');
-// }, 1000);
-
-// const intervalId = setInterval(() => {
-//   console.log(performance.now());
-// }, 1000);
-
-// setTimeout(() => {
-//   clearInterval(intervalId);
-//   console.log('cleared');
-// }, 4000);
-
-// console.log('Before setTimeout');
-
-// setImmediate(() => {
-//   console.log('setImmediate');
-// });
-
-// console.log('Behind setTimeout');
-
-//Unref
-
-const timerId = setTimeout(() => {
-  console.log('boom');
-}, 5000);
-
-timerId.unref();
+setTimeout(() => {
+  console.log(performance.now(), 'Timeout 0');
+}, 100);
 
 setImmediate(() => {
-  timerId.ref();
+  console.log('Immediate 0');
 });
+
+fs.readFile(__filename, () => {
+  console.log('FS');
+});
+
+setTimeout(() => {
+  for (let i = 0; i < 1000000000; i++) {}
+  console.log('done 1');
+
+  Promise.resolve().then(() => {
+    console.log('Promise 2');
+  });
+
+  process.nextTick(() => {
+    console.log('NextTick 1');
+  });
+}, 0);
+
+Promise.resolve().then(() => {
+  console.log('Promise 1');
+});
+
+process.nextTick(() => {
+  console.log('NextTick 0');
+});
+
+console.log('Final');
