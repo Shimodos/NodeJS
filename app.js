@@ -1,30 +1,14 @@
-// const { exec } = require('child_process');
+const { fork } = require('child_process');
 
-// const childProcce = exec('dir', (err, stdout, stderr) => {
-//   if (err) {
-//     console.error(err);
-//     return;
-//   }
-//   console.log(`stdout: ${stdout}`);
-//   console.log(`stderr: ${stderr}`);
-// });
+const forkProccess = fork('./fork.js');
 
-// childProcce.on('exit', (code) => {
-//   console.log(`Child process exited with code ${code}`);
-// });
-
-const { spawn } = require('child_process');
-
-const childProcce = spawn('dir');
-
-childProcce.stdout.on('data', (data) => {
-  console.log(`stdout ${data}`);
+forkProccess.on('message', (msg) => {
+  console.log(`Message: ${msg}`);
 });
 
-childProcce.stderr.on('data', (data) => {
-  console.log(`stderr ${data}`);
-});
-
-childProcce.on('exit', (code) => {
+forkProccess.on('close', (code) => {
   console.log(`Child process exited with code ${code}`);
 });
+
+forkProccess.send('Hello from parent!');
+forkProccess.send('disconnect');
