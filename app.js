@@ -1,37 +1,30 @@
-const perf_hooks = require('perf_hooks');
+const factorial = require('./factorial');
 
-test = perf_hooks.performance.timerify(test); // Wrapping the function with timerify
-
-const PerformanceObserver = new perf_hooks.PerformanceObserver((items, observer) => {
-  console.log(items.getEntries());
-  const entry = items.getEntries('slow').pop();
-  console.log(`The time taken is ${entry.name}  ${entry.duration}`);
-  observer.disconnect();
-});
-
-PerformanceObserver.observe({
-  entryTypes: ['measure', 'function'],
-  buffered: true,
-});
-
-function test() {
+const compute = (array) => {
   const arr = [];
-  for (let i = 0; i < 1000000; i++) {
+  for (let i = 0; i < 100000000; i++) {
     arr.push(i * i);
   }
-}
+  return array.map((el) => factorial(el));
+};
 
-function slow() {
+const main = () => {
   performance.mark('start');
-  const arr = [];
-  for (let i = 0; i < 7000000; i++) {
-    arr.push(i * i);
-  }
+  const result = [
+    compute([5, 6, 7, 8, 9, 10]),
+    compute([5, 6, 7, 8, 9, 10]),
+    compute([5, 6, 7, 8, 9, 10]),
+    compute([5, 6, 7, 8, 9, 10]),
+  ];
+  console.log(result);
+
   performance.mark('end');
-  performance.measure('slow', 'start', 'end');
+  performance.measure('start to end', 'start', 'end');
+  console.log(performance.getEntriesByType('measure').pop());
+};
 
-  // console.log(performance.getEntriesByName('slow'));
-}
+setTimeout(() => {
+  console.log('Timeout completed!');
+}, 2000);
 
-slow();
-test();
+main();
