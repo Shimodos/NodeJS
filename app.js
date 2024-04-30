@@ -1,30 +1,30 @@
-const factorial = require('./factorial');
+// const { exec } = require('child_process');
 
-const compute = (array) => {
-  const arr = [];
-  for (let i = 0; i < 100000000; i++) {
-    arr.push(i * i);
-  }
-  return array.map((el) => factorial(el));
-};
+// const childProcce = exec('dir', (err, stdout, stderr) => {
+//   if (err) {
+//     console.error(err);
+//     return;
+//   }
+//   console.log(`stdout: ${stdout}`);
+//   console.log(`stderr: ${stderr}`);
+// });
 
-const main = () => {
-  performance.mark('start');
-  const result = [
-    compute([5, 6, 7, 8, 9, 10]),
-    compute([5, 6, 7, 8, 9, 10]),
-    compute([5, 6, 7, 8, 9, 10]),
-    compute([5, 6, 7, 8, 9, 10]),
-  ];
-  console.log(result);
+// childProcce.on('exit', (code) => {
+//   console.log(`Child process exited with code ${code}`);
+// });
 
-  performance.mark('end');
-  performance.measure('start to end', 'start', 'end');
-  console.log(performance.getEntriesByType('measure').pop());
-};
+const { spawn } = require('child_process');
 
-setTimeout(() => {
-  console.log('Timeout completed!');
-}, 2000);
+const childProcce = spawn('dir');
 
-main();
+childProcce.stdout.on('data', (data) => {
+  console.log(`stdout ${data}`);
+});
+
+childProcce.stderr.on('data', (data) => {
+  console.log(`stderr ${data}`);
+});
+
+childProcce.on('exit', (code) => {
+  console.log(`Child process exited with code ${code}`);
+});
