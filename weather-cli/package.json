@@ -1,0 +1,29 @@
+{
+  "name": "weather-cli",
+  "version": "1.0.0",
+  "description": "CLI for getting weather",
+  "main": "index.js",
+  "bin": "index.js",
+  "engines": {
+    "node": ">=12.0.0"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "cli",
+    "weather"
+  ],
+  "author": "Oleksii Demchenko",
+  "license": "ISC",
+  "homepage": "https://alexdev.co.ua/",
+  "repository": {
+    "type": "git",
+    "url": "https://alexdev.co.ua/"
+  },
+  "bugs": {
+    "url": "https://alexdev.co.ua/",
+    "email": "ukrartdesign@gmail.com"
+  }
+}
