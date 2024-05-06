@@ -1,22 +1,20 @@
 #!/usr/bin/env node
 import { getArgs } from './helpers/args.js';
+import { printHelp, prinSuccess } from './services/log.servicie.js';
 
 const initCLI = () => {
   const args = getArgs(process.argv);
-  console.log(args);
+  // console.log(args);
   if (args.h) {
     // Show help
-    console.log('Help');
+    printHelp();
   }
   if (args.c) {
     // Show settings
-    console.log('City');
   }
   if (args.t) {
     // Show temperature
-    console.log('Temperature');
   }
-  console.log('Weather CLI');
 };
 
 initCLI();
