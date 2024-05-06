@@ -1,7 +1,16 @@
 #!/usr/bin/env node
 import { getArgs } from './helpers/args.js';
-import { printHelp, prinSuccess } from './services/log.service.js';
+import { printHelp, prinSuccess, printError } from './services/log.service.js';
 import { saveKeyValue } from './services/storage.service.js';
+
+const saveToken = async (token) => {
+  try {
+    await saveKeyValue('token', token);
+    prinSuccess('Token already saved');
+  } catch (error) {
+    printError(error.message);
+  }
+};
 
 const initCLI = () => {
   const args = getArgs(process.argv);
@@ -15,7 +24,7 @@ const initCLI = () => {
   }
   if (args.t) {
     // Token
-    saveKeyValue('token', args.t);
+    return saveToken(args.t);
   }
 };
 
