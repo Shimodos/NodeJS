@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 import { getArgs } from './helpers/args.js';
-import { printHelp, printSuccess, printError } from './services/log.service.js';
-import { saveKeyValue, TOKEN_DICTIONARY } from './services/storage.service.js';
-import { getWeather } from './services/api.service.js';
+import { printHelp, printSuccess, printError, printWeather } from './services/log.service.js';
+import { saveKeyValue, TOKEN_DICTIONARY, getKeyValues } from './services/storage.service.js';
+import { getWeather, getIcon } from './services/api.service.js';
 
 const saveToken = async (token) => {
   if (!token.length) {
@@ -15,11 +15,24 @@ const saveToken = async (token) => {
     printError(error.message);
   }
 };
+// Save city
+const saveCity = async (city) => {
+  if (!city.length) {
+    return printError('City not transferred');
+  }
+  try {
+    await saveKeyValue(TOKEN_DICTIONARY.city, city);
+    printSuccess('City already saved');
+  } catch (error) {
+    printError(error.message);
+  }
+};
 
 const getForecast = async () => {
   try {
-    const weather = await getWeather(process.env.CITY);
-    console.log(weather);
+    const city = process.env.CITY ?? (await getKeyValues(TOKEN_DICTIONARY.city));
+    const weather = await getWeather(city);
+    printWeather(weather, getIcon(weather.weather[0].icon));
   } catch (error) {
     if (error?.response?.status == 404) {
       printError('City not found');
@@ -40,14 +53,15 @@ const initCLI = () => {
     printHelp();
   }
   if (args.c) {
-    // Show settings
+    // Save city
+    return saveCity(args.c);
   }
   if (args.t) {
-    // Token
+    // Save Token
     return saveToken(args.t);
   }
   // getWeather('Valencia');
-  getForecast();
+  return getForecast();
 };
 
 initCLI();
