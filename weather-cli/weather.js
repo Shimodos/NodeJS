@@ -1,12 +1,16 @@
 #!/usr/bin/env node
 import { getArgs } from './helpers/args.js';
-import { printHelp, prinSuccess, printError } from './services/log.service.js';
-import { saveKeyValue } from './services/storage.service.js';
+import { printHelp, printSuccess, printError } from './services/log.service.js';
+import { saveKeyValue, TOKEN_DICTIONARY } from './services/storage.service.js';
+import { getWeather } from './services/api.service.js';
 
 const saveToken = async (token) => {
+  if (!token.length) {
+    return printError('Token not transferred');
+  }
   try {
-    await saveKeyValue('token', token);
-    prinSuccess('Token already saved');
+    await saveKeyValue(TOKEN_DICTIONARY.token, token);
+    printSuccess('Token already saved');
   } catch (error) {
     printError(error.message);
   }
@@ -26,6 +30,7 @@ const initCLI = () => {
     // Token
     return saveToken(args.t);
   }
+  getWeather('Valencia');
 };
 
 initCLI();

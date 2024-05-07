@@ -5,14 +5,14 @@ const printError = (error) => {
   console.log(chalk.bgRed(' Error: ') + ' ' + error);
 };
 
-const prinSuccess = (message) => {
+const printSuccess = (message) => {
   console.log(chalk.bgGreen(' Success: ') + message);
 };
 
 const printHelp = () => {
   console.log(
     dedent`${chalk.bgCyan(' Help ')}
-    Without Paramas - Show weather
+    Without Params - Show weather
     -c - [CITY] from choose city
     -h - Show help
     -t - [API_KEY] Save token
@@ -20,4 +20,4 @@ const printHelp = () => {
   );
 };
 
-export { printError, prinSuccess, printHelp };
+export { printError, printSuccess, printHelp };
