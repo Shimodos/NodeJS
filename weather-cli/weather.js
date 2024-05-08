@@ -4,6 +4,7 @@ import { printHelp, printSuccess, printError, printWeather } from './services/lo
 import { saveKeyValue, TOKEN_DICTIONARY, getKeyValues } from './services/storage.service.js';
 import { getWeather, getIcon } from './services/api.service.js';
 
+// Save token
 const saveToken = async (token) => {
   if (!token.length) {
     return printError('Token not transferred');
@@ -28,6 +29,7 @@ const saveCity = async (city) => {
   }
 };
 
+// Get forecast
 const getForecast = async () => {
   try {
     const city = process.env.CITY ?? (await getKeyValues(TOKEN_DICTIONARY.city));
