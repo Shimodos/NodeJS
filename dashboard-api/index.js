@@ -4,26 +4,17 @@ const host = '127.0.0.1';
 const port = 3000;
 const app = express();
 
-app.all('/Helloworld', (req, res, next) => {
-  console.log('Accessing the secret section ...');
-  next();
-});
-
-const cb = (req, res, next) => {
-  console.log('CB1');
-};
-
-app
-  .route('/user')
-  .get('/Helloworld', cb, (req, res) => {
-    res.send('Hello World');
-  })
-  .post('/Helloworld', cb, (req, res) => {
-    res.send('Hello World1');
+app.get('/Helloworld', (req, res) => {
+  res.cookie('toren', 'zcfasf234234q3413434', {
+    httpOnly: true,
+    secure: true,
+    path: '/',
+    maxAge: 1000 * 60 * 60 * 24 * 7,
+    expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
   });
-
-app.post('/Helloworld', cb, (req, res) => {
-  res.send('Hello World2');
+  res.clearCookie('toren', { path: '/' });
+  res.type('application/json');
+  res.send('hello world');
 });
 
 app.listen(port, host, () => {
