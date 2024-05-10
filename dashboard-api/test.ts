@@ -1,18 +1,56 @@
-let univesalId: number | string = 123;
-univesalId = '123';
+type coord = { x: number; y: number };
 
-function printId(id: number | string) {
-  if (typeof id == 'string') {
-    console.log(id.toUpperCase());
-  } else {
-    console.log(id);
-  }
+interface ICoord {
+  x: number;
+  y: number;
 }
 
-function helloUser(name: string | string[]) {
-  if (Array.isArray(name)) {
-    console.log(name.join(', '));
-  } else {
-    console.log(name);
-  }
+type ID = number | string;
+type myString = string;
+
+function compute(coord: ICoord) {
+  return coord.x + coord.y;
 }
+
+interface Animal {
+  name: string;
+  age: number;
+}
+
+interface Dog extends Animal {
+  breed: string;
+}
+
+const dog: Dog = {
+  name: 'dog',
+  age: 5,
+  breed: 'labrador',
+};
+dog.age = 6;
+
+type DogType = {
+  name: string;
+};
+
+// Обьединение типов
+type Dog2 = DogType & {
+  breed: string;
+};
+
+const dog2: Dog2 = {
+  name: 'dog',
+  breed: 'labrador',
+};
+
+interface IDog {
+  name: string;
+}
+
+interface IDog {
+  breed: string;
+}
+
+const dog3: IDog = {
+  name: 'dog',
+  breed: 'labrador',
+};
