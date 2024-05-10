@@ -1,48 +1,38 @@
-const a = 'test';
+//Enam
 
-let b: 'test1' = 'test1';
+type direct = 'left' | 'right' | 'up' | 'down';
 
-type diraction = 'up' | 'down' | 'left' | 'right';
+enum Direction {
+  Left,
+  Right,
+  Up,
+  Down,
+}
 
-function move(dir: diraction) {
-  switch (dir) {
-    case 'up':
-      console.log('Moving up');
-      break;
-    case 'down':
-      console.log('Moving down');
-      break;
+function move(direction: direct) {
+  switch (direction) {
     case 'left':
-      console.log('Moving left');
-      break;
+      return -1;
     case 'right':
-      console.log('Moving right');
-      break;
-    default:
-      return 0;
+      return 1;
+    case 'up':
+      return -1;
+    case 'down':
+      return 1;
   }
 }
 
-move('up');
-
-interface IConect {
-  host: string;
-  port: number;
+function objMod(odj: { Left: number }) {
+  return (odj.Left = 1);
 }
 
-function connect(config: IConect | 'default') {
-  if (config === 'default') {
-    console.log('Using default config');
-  } else {
-    console.log(`Using ${config.host}:${config.port}`);
-  }
+objMod(Direction);
+
+const enum Direction2 {
+  Left,
+  Right,
+  Up,
+  Down,
 }
 
-const req = {
-  host: 'localhost',
-  protocol: 'https' as 'http' | 'https',
-};
-
-function logAccess(host: string, protocol: 'http' | 'https') {}
-
-logAccess(req.host, req.protocol);
+let myDirection = Direction2.Left;
