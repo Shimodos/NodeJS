@@ -1,56 +1,48 @@
-type coord = { x: number; y: number };
+const a = 'test';
 
-interface ICoord {
-  x: number;
-  y: number;
+let b: 'test1' = 'test1';
+
+type diraction = 'up' | 'down' | 'left' | 'right';
+
+function move(dir: diraction) {
+  switch (dir) {
+    case 'up':
+      console.log('Moving up');
+      break;
+    case 'down':
+      console.log('Moving down');
+      break;
+    case 'left':
+      console.log('Moving left');
+      break;
+    case 'right':
+      console.log('Moving right');
+      break;
+    default:
+      return 0;
+  }
 }
 
-type ID = number | string;
-type myString = string;
+move('up');
 
-function compute(coord: ICoord) {
-  return coord.x + coord.y;
+interface IConect {
+  host: string;
+  port: number;
 }
 
-interface Animal {
-  name: string;
-  age: number;
+function connect(config: IConect | 'default') {
+  if (config === 'default') {
+    console.log('Using default config');
+  } else {
+    console.log(`Using ${config.host}:${config.port}`);
+  }
 }
 
-interface Dog extends Animal {
-  breed: string;
-}
-
-const dog: Dog = {
-  name: 'dog',
-  age: 5,
-  breed: 'labrador',
+const req = {
+  host: 'localhost',
+  protocol: 'https' as 'http' | 'https',
 };
-dog.age = 6;
 
-type DogType = {
-  name: string;
-};
+function logAccess(host: string, protocol: 'http' | 'https') {}
 
-// Обьединение типов
-type Dog2 = DogType & {
-  breed: string;
-};
-
-const dog2: Dog2 = {
-  name: 'dog',
-  breed: 'labrador',
-};
-
-interface IDog {
-  name: string;
-}
-
-interface IDog {
-  breed: string;
-}
-
-const dog3: IDog = {
-  name: 'dog',
-  breed: 'labrador',
-};
+logAccess(req.host, req.protocol);
