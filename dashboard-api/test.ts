@@ -36,4 +36,4 @@ const enum Direction2 {
 }
 
 let myDirection = Direction2.Left;
-// let myDirection2 = Direction2.Right;
+let myDirection2 = Direction2.Right;
