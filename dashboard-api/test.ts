@@ -1,39 +1,21 @@
-//Enam
-
-type direct = 'left' | 'right' | 'up' | 'down';
-
-enum Direction {
-  Left,
-  Right,
-  Up,
-  Down,
+interface HasLength {
+  length: number;
 }
 
-function move(direction: direct) {
-  switch (direction) {
-    case 'left':
-      return -1;
-    case 'right':
-      return 1;
-    case 'up':
-      return -1;
-    case 'down':
-      return 1;
-  }
+function log<T extends HasLength, K>(obj: T, arr: K[]): K[] {
+  obj.length;
+  console.log(obj);
+  return arr;
 }
 
-function objMod(odj: { Left: number }) {
-  return (odj.Left = 1);
+log<string, number>('Hello, world!', [1, 2, 3]);
+
+interface IUser {
+  name: string;
+  age?: number;
+  bid: <T>(n: T) => boolean;
 }
 
-objMod(Direction);
-
-const enum Direction2 {
-  Left,
-  Right,
-  Up,
-  Down,
+function bid<T>(n: T): boolean {
+  return true;
 }
-
-let myDirection = Direction2.Left;
-let myDirection2 = Direction2.Right;
