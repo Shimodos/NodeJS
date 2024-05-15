@@ -1,14 +1,15 @@
 import { Logger } from 'tslog';
+import { ILogger } from './logger.interface';
 
-export class LoggerService {
-  public logger: Logger<any>;
+export class LoggerService implements ILogger {
+  public logger: Logger;
 
   constructor() {
     this.logger = new Logger({
-      // displayFunctionName: false,
-      // displayInstanceName: false,
-      // displayFilePath: 'hidden',
-      // displayLoggerName: false,
+      displayFunctionName: false,
+      displayInstanceName: false,
+      displayFilePath: 'hidden',
+      displayLoggerName: false,
     });
   }
 
