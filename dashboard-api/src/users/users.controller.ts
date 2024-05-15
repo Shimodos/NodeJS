@@ -1,13 +1,11 @@
 import { BaseController } from '../common/base.controller';
+import { HttpError } from '../errors/http-error.class';
 import { LoggerService } from '../logger/logger.service';
-import { UserService } from './users.interface';
+
 import { NextFunction, Request, Response } from 'express';
 
 export class UsersController extends BaseController {
-  constructor(
-    // private userService: UserService,
-    logger: LoggerService,
-  ) {
+  constructor(logger: LoggerService) {
     super(logger);
     this.bindRouts([
       { path: '/register', method: 'post', func: this.register },
@@ -15,11 +13,11 @@ export class UsersController extends BaseController {
     ]);
   }
 
-  login(req: Request, res: Response, neat: NextFunction) {
-    this.ok(res, 'Login');
+  login(req: Request, res: Response, next: NextFunction) {
+    next(new HttpError(401, 'User already exists', 'login'));
   }
 
-  register(req: Request, res: Response, neat: NextFunction) {
-    this.ok(res, 'Register');
+  register(req: Request, res: Response, next: NextFunction) {
+    this.ok(res, 'User created');
   }
 }
