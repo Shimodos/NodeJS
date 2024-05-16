@@ -5,8 +5,9 @@ import { NextFunction, Request, Response } from 'express';
 import { TYPES } from '../types';
 import { inject, injectable } from 'inversify';
 import 'reflect-metadata';
+import { IUserController } from './users.controller.interface';
 @injectable()
-export class UsersController extends BaseController {
+export class UsersController extends BaseController implements IUserController {
   constructor(@inject(TYPES.ILogger) private loggerService: ILogger) {
     super(loggerService);
     this.bindRouts([
