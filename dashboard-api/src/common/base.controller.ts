@@ -8,6 +8,7 @@ import 'reflect-metadata';
 @injectable()
 export abstract class BaseController {
 	private _router: Router = Router();
+
 	constructor(private logger: ILogger) {
 		this._router = Router();
 	}
@@ -32,8 +33,8 @@ export abstract class BaseController {
 	protected bindRouts(routes: IControllerRoute[]): void {
 		for (const route of routes) {
 			this.logger.log(`Binding route ${route.method.toUpperCase()} ${route.path}`);
-			const headler = route.func.bind(this); // bind the function to the controller
-			this.router[route.method](route.path, route.func, headler);
+			const heandler = route.func.bind(this); // bind the function to the controller
+			this.router[route.method](route.path, heandler);
 		}
 	}
 }

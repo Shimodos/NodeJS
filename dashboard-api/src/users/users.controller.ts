@@ -8,6 +8,7 @@ import 'reflect-metadata';
 import { IUserController } from './users.controller.interface';
 import { userLoginDto } from './dto/user-login.dto';
 import { userRegisterDto } from './dto/user-register.dto';
+import { User } from './user.antty';
 @injectable()
 export class UsersController extends BaseController implements IUserController {
 	constructor(@inject(TYPES.ILogger) private loggerService: ILogger) {
@@ -23,8 +24,13 @@ export class UsersController extends BaseController implements IUserController {
 		next(new HttpError(401, 'User already exists', 'login'));
 	}
 
-	register(req: Request<{}, {}, userRegisterDto>, res: Response, next: NextFunction): void {
-		console.log(req.body);
-		this.ok(res, 'register');
+	async register(
+		{ body }: Request<{}, {}, userRegisterDto>,
+		res: Response,
+		next: NextFunction,
+	): Promise<void> {
+		const newUser = new User(body.name, body.email);
+		await newUser.setPassword(body.password);
+		this.ok(res, newUser);
 	}
 }
