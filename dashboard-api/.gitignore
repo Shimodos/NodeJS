@@ -10,6 +10,9 @@
 /build
 /dist
 /.clinic
+/.env
+/prisma/dev.db
+/prisma/dev.db-jornal
 
 # misc
 .DS_Store
