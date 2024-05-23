@@ -3,7 +3,7 @@ import { HttpError } from '../errors/http-error.class';
 import { ILogger } from '../logger/logger.interface';
 import { NextFunction, Request, Response } from 'express';
 import { TYPES } from '../types';
-import { inject, injectable } from 'inversify';
+import { id, inject, injectable } from 'inversify';
 import 'reflect-metadata';
 import { IUserController } from './users.controller.interface';
 import { userLoginDto } from './dto/user-login.dto';
@@ -44,6 +44,6 @@ export class UsersController extends BaseController implements IUserController {
 		if (!result) {
 			return next(new HttpError(422, 'The user already exists '));
 		}
-		this.ok(res, { email: result.email });
+		this.ok(res, { email: result.email, id: result.id });
 	}
 }

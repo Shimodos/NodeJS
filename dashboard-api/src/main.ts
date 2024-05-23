@@ -13,6 +13,8 @@ import { IConfigService } from './config/cohfig.service.interface';
 import { ConfigService } from './config/config.service';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from './database/prisma.service';
+import { UsersRepository } from './users/users.repository';
+import { IUsersRepository } from './users/users.repository.interface';
 
 export interface IBootstrapRetur {
 	appContainer: Container;
@@ -25,7 +27,9 @@ export const appBindings = new ContainerModule((bind: interfaces.Bind) => {
 	bind<IUserController>(TYPES.UsersController).to(UsersController).inSingletonScope();
 	bind<IUserService>(TYPES.UserService).to(UserService).inSingletonScope();
 	bind<IConfigService>(TYPES.ConfigService).to(ConfigService).inSingletonScope();
+	bind<IUsersRepository>(TYPES.UsersRepository).to(UsersRepository).inSingletonScope();
 	bind<PrismaService>(TYPES.PrismaService).to(PrismaService).inSingletonScope();
+
 	bind<App>(TYPES.Application).to(App);
 });
 

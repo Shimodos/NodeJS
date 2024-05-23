@@ -5,19 +5,28 @@ import { User } from './user.antty';
 import { IUserService } from './user.service.interface';
 import { IConfigService } from '../config/cohfig.service.interface';
 import { TYPES } from '../types';
+import { IUsersRepository } from './users.repository.interface';
+import { UserModel } from '@prisma/client';
 
 @injectable()
 export class UserService implements IUserService {
-	constructor(@inject(TYPES.ConfigService) private configService: IConfigService) {
+	constructor(
+		@inject(TYPES.ConfigService) private configService: IConfigService,
+		@inject(TYPES.UsersRepository) private UsersRepository: IUsersRepository,
+	) {
 		console.log('UserService');
 	}
 
-	async createUser({ email, name, password }: userRegisterDto): Promise<User | null> {
+	async createUser({ email, name, password }: userRegisterDto): Promise<UserModel | null> {
 		const newUser = new User(name, email);
 		const salt = this.configService.get<number>('SALT');
 		console.log(salt);
 		await newUser.setPassword(password, salt);
-		return null;
+		const existedUser = await this.UsersRepository.findByEmail(email);
+		if (existedUser) {
+			return null;
+		}
+		return this.UsersRepository.create(newUser);
 	}
 
 	async validateUser(dto: userLoginDto): Promise<boolean> {
