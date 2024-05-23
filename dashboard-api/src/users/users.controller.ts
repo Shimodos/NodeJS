@@ -3,20 +3,22 @@ import { HttpError } from '../errors/http-error.class';
 import { ILogger } from '../logger/logger.interface';
 import { NextFunction, Request, Response } from 'express';
 import { TYPES } from '../types';
-import { id, inject, injectable } from 'inversify';
+import { inject, injectable } from 'inversify';
 import 'reflect-metadata';
 import { IUserController } from './users.controller.interface';
 import { userLoginDto } from './dto/user-login.dto';
 import { userRegisterDto } from './dto/user-register.dto';
-import { User } from './user.antty';
-import { UserService } from './user.service';
 import { ValidateMiddleware } from '../common/validate.middlewares';
+import { sign } from 'jsonwebtoken';
+import { IConfigService } from '../config/cohfig.service.interface';
+import { IUserService } from './user.service.interface';
 
 @injectable()
 export class UsersController extends BaseController implements IUserController {
 	constructor(
 		@inject(TYPES.ILogger) private loggerService: ILogger,
-		@inject(TYPES.UserService) private userService: UserService,
+		@inject(TYPES.UserService) private userService: IUserService,
+		@inject(TYPES.ConfigService) private configService: IConfigService,
 	) {
 		super(loggerService);
 		this.bindRouts([
@@ -50,7 +52,8 @@ export class UsersController extends BaseController implements IUserController {
 				),
 			);
 		}
-		this.ok(res, {});
+		const token = await this.signToken(req.body.email, this.configService.get('JWT_SECRET'));
+		this.ok(res, { token });
 	}
 
 	async register(
@@ -63,5 +66,20 @@ export class UsersController extends BaseController implements IUserController {
 			return next(new HttpError(422, 'The user already exists '));
 		}
 		this.ok(res, { email: result.email, id: result.id });
+	}
+
+	private signToken(email: string, secret: string): Promise<string> {
+		//retern Promise<string>
+		return new Promise<string>((resolve, reject) => {
+			sign(
+				{ email, iat: Math.floor(Date.now() / 1000) },
+				secret,
+				{ algorithm: 'HS256' },
+				(err, token) => {
+					if (err) reject(err);
+					resolve(token as string);
+				},
+			);
+		});
 	}
 }
