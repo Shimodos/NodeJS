@@ -9,6 +9,7 @@ import { json } from 'body-parser';
 import { IConfigService } from './config/cohfig.service.interface';
 import { IExeptionFilter } from './errors/exeption.filter.interface';
 import { PrismaService } from './database/prisma.service';
+import { AuthMiddleware } from './common/auth.middlewares';
 
 @injectable()
 export class App {
@@ -31,6 +32,8 @@ export class App {
 
 	useMiddleware(): void {
 		this.app.use(json());
+		const authMiddleware = new AuthMiddleware(this.configService.get('JWT_SECRET'));
+		this.app.use(authMiddleware.execute.bind(authMiddleware));
 	}
 
 	useRoutes(): void {

@@ -34,6 +34,12 @@ export class UsersController extends BaseController implements IUserController {
 				func: this.login,
 				middlewares: [new ValidateMiddleware(userLoginDto)],
 			},
+			{
+				path: '/info',
+				method: 'get',
+				func: this.info,
+				middlewares: [],
+			},
 		]);
 	}
 
@@ -66,6 +72,10 @@ export class UsersController extends BaseController implements IUserController {
 			return next(new HttpError(422, 'The user already exists '));
 		}
 		this.ok(res, { email: result.email, id: result.id });
+	}
+
+	async info({ user }: Request<{}>, res: Response, next: NextFunction): Promise<void> {
+		this.ok(res, { email: user });
 	}
 
 	private signToken(email: string, secret: string): Promise<string> {
