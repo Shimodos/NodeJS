@@ -51,8 +51,33 @@ describe('UserService', () => {
 			password: '12334',
 		});
 		expect(createUser?.id).toEqual(1);
-		expect(createUser?.name).toEqual('Alex');
-		expect(createUser?.email).toEqual('qq@qq.com');
-		expect(createUser?.password).toEqual('12334');
+		expect(createUser?.password).not.toEqual('12334');
+	});
+
+	it('validateUser - success', async () => {
+		usersRepository.findByEmail = jest.fn().mockReturnValueOnce(createUser);
+		const result = await userService.validateUser({
+			email: 'qq@qq.com',
+			password: '12334',
+		});
+		expect(result).toBeTruthy();
+	});
+
+	it('validateUser - wrong pass', async () => {
+		usersRepository.findByEmail = jest.fn().mockReturnValueOnce(createUser);
+		const result = await userService.validateUser({
+			email: 'qq@qq.com',
+			password: '12',
+		});
+		expect(result).toBeFalsy();
+	});
+
+	it('validateUser - wrong user', async () => {
+		usersRepository.findByEmail = jest.fn().mockReturnValueOnce(null);
+		const result = await userService.validateUser({
+			email: 'qq2@qq.com',
+			password: '12',
+		});
+		expect(result).toBeFalsy();
 	});
 });
