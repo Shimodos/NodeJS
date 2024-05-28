@@ -6,4 +6,5 @@ import { User } from './user.antty';
 export interface IUserService {
 	createUser: (dto: userRegisterDto) => Promise<UserModel | null>;
 	validateUser: (dto: userLoginDto) => Promise<boolean>;
+	getUserByEmail: (email: string) => Promise<UserModel | null>;
 }
