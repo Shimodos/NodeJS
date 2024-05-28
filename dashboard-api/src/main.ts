@@ -11,7 +11,6 @@ import { UserService } from './users/user.service';
 import { IUserController } from './users/users.controller.interface';
 import { IConfigService } from './config/cohfig.service.interface';
 import { ConfigService } from './config/config.service';
-import { Prisma } from '@prisma/client';
 import { PrismaService } from './database/prisma.service';
 import { UsersRepository } from './users/users.repository';
 import { IUsersRepository } from './users/users.repository.interface';
@@ -33,12 +32,12 @@ export const appBindings = new ContainerModule((bind: interfaces.Bind) => {
 	bind<App>(TYPES.Application).to(App);
 });
 
-function bootstrap(): IBootstrapRetur {
+async function bootstrap(): Promise<IBootstrapRetur> {
 	const appContainer = new Container();
 	appContainer.load(appBindings);
 	const app = appContainer.get<App>(TYPES.Application);
-	app.init();
+	await app.init();
 	return { appContainer, app };
 }
 
-export const { appContainer, app } = bootstrap();
+export const boot = bootstrap();
